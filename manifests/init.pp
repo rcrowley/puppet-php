@@ -13,10 +13,11 @@ class php {
 }
 
 class php::php_5_3_0 {
-	sourceinstall { "php-5.3.0":
-		module => "php",
+	$version = "5.3.0"
+	sourceinstall { "php-$version":
 		package => "php",
-		version => "5.3.0",
+		version => "$version",
+		tarball => "puppet://$servername/php/php-$version.tar.bz2",
 		flags => "--enable-cli --enable-cgi --with-openssl --with-curl --with-zlib --enable-intl --with-mysql=mysqlnd --with-mysqli=mysqlnd --enable-pdo --with-pdo-mysql --enable-pcntl --enable-sqlite-utf8 --disable-phar --with-libxml-dir=/usr --with-pear",
 		bin => "sapi/cli/php",
 	}
@@ -24,10 +25,11 @@ class php::php_5_3_0 {
 
 class php::php_5_2_10 {
 	package { "libmysqlclient15-dev": ensure => latest }
-	sourceinstall { "php-5.2.10":
-		module => "php",
+	$version = "5.2.10"
+	sourceinstall { "php-$version":
 		package => "php",
-		version => "5.2.10",
+		version => "$version",
+		tarball => "puppet://$servername/php/php-$version.tar.bz2",
 		flags => "--enable-cli --enable-cgi --enable-fastcgi --with-openssl --with-curl --with-zlib  --with-mysql --with-mysqli --enable-pdo --with-pdo-mysql --enable-pcntl --enable-sqlite-utf8 --with-libxml-dir=/usr --with-pear",
 		bin => "sapi/cli/php",
 	}
