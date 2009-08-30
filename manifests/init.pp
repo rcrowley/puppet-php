@@ -1,12 +1,4 @@
-define php_install($version) {
-
-	package { "libxml2-dev": ensure => latest }
-	package { "libexpat1-dev": ensure => latest }
-	package { "libssl-dev": ensure => latest }
-	package { "libcurl4-openssl-dev": ensure => latest }
-	package { "libicu-dev": ensure => latest }
-	package { "libmysqlclient15-dev": ensure => latest }
-	package { "sendmail": ensure => latest }
+define php_install($version, $flags) {
 
 	file { "/opt/php-$version.tar.bz2":
 		before => Exec["extract-php-$version"],
@@ -26,7 +18,7 @@ define php_install($version) {
 		require => Exec["extract-php-$version"],
 		before => Exec["make-php-$version"],
 		cwd => "/root/php-$version",
-		command => "./configure --prefix=/opt/php-5.3.0 --enable-cli --enable-cgi --with-openssl --with-curl --with-zlib --enable-intl --with-mysql=mysqlnd --with-mysqli=mysqlnd --enable-pdo --with-pdo-mysql --enable-pcntl --enable-sqlite-utf8 --disable-phar --with-libxml-dir=/usr --with-pear",
+		command => "./configure --prefix=/opt/php-$version $flags",
 		timeout => "-1",
 		creates => "/root/php-$version/Makefile",
 		onlyif => "test -d /root/php-$version",
@@ -58,11 +50,30 @@ define php_install($version) {
 }
 
 class php {
+
+	package { "libxml2-dev": ensure => latest }
+	package { "libexpat1-dev": ensure => latest }
+	package { "libssl-dev": ensure => latest }
+	package { "libcurl4-openssl-dev": ensure => latest }
+	package { "libicu-dev": ensure => latest }
+	package { "sendmail": ensure => latest }
+
 	include php::php_5_3_0
+	include php::php_5_2_10
+
 }
+
 class php::php_5_3_0 {
-	php_install { "php-5.3.0": version => "5.3.0" }
+	php_install { "php-5.3.0":
+		version => "5.3.0",
+		flags => "--enable-cli --enable-cgi --with-openssl --with-curl --with-zlib --enable-intl --with-mysql=mysqlnd --with-mysqli=mysqlnd --enable-pdo --with-pdo-mysql --enable-pcntl --enable-sqlite-utf8 --disable-phar --with-libxml-dir=/usr --with-pear",
+	}
 }
-#class php::php_5_2_8 {
-#	php_install { "php-5.2.8": version => "5.2.8" }
-#}
+
+class php::php_5_2_10 {
+	package { "libmysqlclient15-dev": ensure => latest }
+	php_install { "php-5.2.10":
+		version => "5.2.10",
+		flags => "--enable-cli --enable-cgi --enable-fastcgi --with-openssl --with-curl --with-zlib  --with-mysql --with-mysqli --enable-pdo --with-pdo-mysql --enable-pcntl --enable-sqlite-utf8 --with-libxml-dir=/usr --with-pear",
+	}
+}
