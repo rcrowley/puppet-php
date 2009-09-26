@@ -10,6 +10,11 @@ class php {
 	include php::php_5_3_0
 	include php::php_5_2_10
 
+	file { "/usr/local/bin/pick-php":
+		source => "puppet://$servername/php/pick-php",
+		ensure => present,
+	}
+
 }
 
 class php::php_5_3_0 {

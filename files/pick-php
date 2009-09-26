@@ -1,0 +1,19 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+	echo "Usage: $(basename $0) <php-path> >~/.profile" >&2
+	echo "       eval \$($(basename $0) <php-path>)" >&2
+	exit 1
+fi
+
+if [ -x "$1/php" ]; then
+	export PATH="$1"
+elif [ -x "$1/bin/php" ]; then
+	export PATH="$1/bin"
+elif [ -x "/opt/$1/bin/php" ]; then
+	export PATH="/opt/$1/bin"
+elif [ -x "/opt/php-$1/bin/php" ]; then
+	export PATH="/opt/php-$1/bin"
+else
+	echo "[pick-php] no php found in $1" >&2
+fi
