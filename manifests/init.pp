@@ -1,11 +1,13 @@
 class php {
 
-	package { "libxml2-dev": ensure => latest }
-	package { "libexpat1-dev": ensure => latest }
-	package { "libssl-dev": ensure => latest }
-	package { "libcurl4-openssl-dev": ensure => latest }
-	package { "libicu-dev": ensure => latest }
-	package { "sendmail": ensure => latest }
+	package {
+		"libxml2-dev": ensure => latest;
+		"libexpat1-dev": ensure => latest;
+#		"libssl-dev": ensure => latest; # Now in sourceinstall::build
+		"libcurl4-openssl-dev": ensure => latest;
+		"libicu-dev": ensure => latest;
+#		"sendmail": ensure => latest;
+	}
 
 	include php::php_5_3_0
 	include php::php_5_2_10
